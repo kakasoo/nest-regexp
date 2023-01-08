@@ -7,7 +7,14 @@ export class RegExpService {
     /**
      * note : regular expression functions
      */
-    async getUntilPathname( originalUrl:string) {
+    getUntilPathname(originalUrl: string) {
         return originalUrl.split('#')?.at(0)?.split('?').at(0) || '';
+    }
+
+    analizeUrl(url: string) {}
+
+    getScheme(url: string) {
+        const scheme = RegExp('[a-z]://', 'ig');
+        return url.search(scheme);
     }
 }
