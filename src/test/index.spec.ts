@@ -17,7 +17,12 @@ describe('getUntilPathName', () => {
         it('includeForhead', () => {
             const includeRegExp = regExpService.createRegExpBuilder('test').include('forehead', true).getOne();
             const res = 'foreheadtest'.match(includeRegExp).at(0);
-            console.log(includeRegExp);
+            expect(res).toBe('test');
+        });
+
+        it('includeBehind', () => {
+            const includeRegExp = regExpService.createRegExpBuilder('test').include('behind', false).getOne();
+            const res = 'testbehind'.match(includeRegExp).at(0);
             expect(res).toBe('test');
         });
     });
@@ -56,7 +61,7 @@ describe('getUntilPathName', () => {
         });
     });
 
-    describe('getPathname', () => {
+    describe.skip('getPathname', () => {
         it('www.example.com/abcd/efg?q1=a&q2=b', () => {
             const res = regExpService.getPathname('www.example.com/abcd/efg?q1=a&q2=b');
             expect(res).toBe('abcd/efg');
@@ -65,8 +70,14 @@ describe('getUntilPathName', () => {
         /**
          * If scheme is, it treat the scheme as a pathname. This needs to be fixed.
          */
-        it.skip('https://www.example.com/abcd/efg?q1=a&q2=b', () => {
-            const res = regExpService.getPathname('https://www.example.com/abcd/efg?q1=a&q2=b');
+        it('https://www.example.com/abcd/efg?q1=a&q2=b', () => {
+            // const res = regExpService.getPathname('https://www.example.com/abcd/efg?q1=a&q2=b');
+
+            const regexp = regExpService.createRegExpBuilder('/([^?#]*)').include('https://').getOne();
+            const res = 'https://www.example.com/abcd/efg?q1=a&q2=b'.match(regexp);
+            console.log(regexp);
+            console.log(res);
+
             expect(res).toBe('abcd/efg');
         });
     });

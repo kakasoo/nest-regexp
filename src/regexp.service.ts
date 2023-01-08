@@ -50,6 +50,7 @@ export class RegExpService {
      */
     createRegExpBuilder(startString: string) {
         return new (class RegExpBuilder {
+            private flag: 'g' | 'i' | 'ig' | 'm';
             private expression: string;
             constructor(initialValue: string) {
                 this.expression = initialValue;
@@ -63,9 +64,9 @@ export class RegExpService {
              */
             include(partial: string, isForehead: boolean = true) {
                 if (isForehead) {
-                    this.lookbehind(partial);
+                    this.expression = this.lookbehind(partial, this.expression);
                 } else {
-                    this.lookaround(partial);
+                    this.expression = this.lookaround(this.expression, partial);
                 }
 
                 return this;
@@ -76,24 +77,28 @@ export class RegExpService {
              * @returns RegExp (default flag is 'ig')
              */
             getOne() {
+                const flag = this.flag ?? 'ig';
                 return new RegExp(this.expression, 'ig');
             }
 
             /**
-             * @param partial lookaround(?=) string
+             * @param first string (to catch)
+             * @param second lookaround(?=) string
+             * @return `(${first})(${symbol}(${second}))`
              */
-            private lookaround(partial: string) {
+            private lookaround(first: string, second: string) {
                 const symbol = '?=';
-                this.expression = `(${this.expression})(${symbol}(${partial}))`;
+                return `(${first})(${symbol}(${second}))`;
             }
 
             /**
-             *
-             * @param partial lookbehind(?<=) string
+             * @param first lookbehind(?<=) string
+             * @param second string (to catch)
+             * @returns `(${symbol}(${first}))(${second})`
              */
-            private lookbehind(partial: string) {
+            private lookbehind(first: string, second: string) {
                 const symbol = '?<=';
-                this.expression = `(${symbol}(${partial}))(${this.expression})`;
+                return `(${symbol}(${first}))(${second})`;
             }
         })(startString);
     }
@@ -113,8 +118,8 @@ export class RegExpService {
          *      ]
          *
          * ]
-         *
          */
+
         return [...str.matchAll(regExp)].at(0)?.at(1) ?? null;
     }
 }
