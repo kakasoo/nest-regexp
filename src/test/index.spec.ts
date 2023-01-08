@@ -17,6 +17,7 @@ describe('getUntilPathName', () => {
         it('includeForhead', () => {
             const includeRegExp = regExpService.createRegExpBuilder('test').include('forehead', true).getOne();
             const res = 'foreheadtest'.match(includeRegExp).at(0);
+            console.log(includeRegExp);
             expect(res).toBe('test');
         });
     });

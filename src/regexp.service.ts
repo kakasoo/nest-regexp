@@ -99,6 +99,22 @@ export class RegExpService {
     }
 
     private getExactMatched(str: string, regExp: RegExp) {
+        /**
+         * example regexp : /\/([^?#]*)/gi
+         * example input  : 'www.example.com/abcd/efg?q1=a&q2=b'
+         *
+         * [
+         *      [
+         *          '/abcd/efg',                                    // matched string but include non-capturing groups
+         *          'abcd/efg',                                     // here! this is exact matched!
+         *          index: 15,
+         *          input: 'www.example.com/abcd/efg?q1=a&q2=b',
+         *          groups: undefined
+         *      ]
+         *
+         * ]
+         *
+         */
         return [...str.matchAll(regExp)].at(0)?.at(1) ?? null;
     }
 }
