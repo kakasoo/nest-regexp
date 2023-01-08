@@ -43,4 +43,18 @@ describe('getUntilPathName', () => {
             expect(res).toBe('https');
         });
     });
+
+    describe('getDomain', () => {
+        it('www.example.com', () => {
+            const res = regExpService.getDomain('www.example.com');
+            expect(res).toBe('example.com');
+        });
+    });
+
+    describe('getPathname', () => {
+        it('www.example.com/abcd/efg?q1=a&q2=b', () => {
+            const res = regExpService.getPathname('www.example.com/abcd/efg?q1=a&q2=b');
+            expect(res).toBe('abcd/efg');
+        });
+    });
 });
