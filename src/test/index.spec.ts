@@ -15,13 +15,19 @@ describe('getUntilPathName', () => {
 
     describe('createRegExpBulder', () => {
         it('includeForhead', () => {
-            const includeRegExp = regExpService.createRegExpBuilder('test').include('forehead', true).getOne();
+            const includeRegExp = regExpService
+                .createRegExpBuilder('test')
+                .include('forehead', { isForehead: true })
+                .getOne();
             const res = 'foreheadtest'.match(includeRegExp).at(0);
             expect(res).toBe('test');
         });
 
         it('includeBehind', () => {
-            const includeRegExp = regExpService.createRegExpBuilder('test').include('behind', false).getOne();
+            const includeRegExp = regExpService
+                .createRegExpBuilder('test')
+                .include('behind', { isForehead: false })
+                .getOne();
             const res = 'testbehind'.match(includeRegExp).at(0);
             expect(res).toBe('test');
         });

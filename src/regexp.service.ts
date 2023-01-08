@@ -62,8 +62,8 @@ export class RegExpService {
              * @param isForehead default is true. If it's false, first parameter(partial) will set after present expression
              * @returns
              */
-            include(partial: string, isForehead: boolean = true) {
-                if (isForehead) {
+            include(partial: string, options: { isForehead?: boolean } = { isForehead: true }) {
+                if (options.isForehead) {
                     this.expression = this.lookbehind(partial, this.expression);
                 } else {
                     this.expression = this.lookaround(this.expression, partial);
