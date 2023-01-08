@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class RegExpService {
-    constructor() {}
-
     /**
      * note : regular expression functions
      */
@@ -24,7 +22,7 @@ export class RegExpService {
         }
 
         const schemeRegExp = RegExp('^([a-z]+)://', 'g');
-        return [...url.trim().matchAll(schemeRegExp)].at(0)?.at(1) ?? null;
+        return this.getExactMatched(url.trim(), schemeRegExp);
     }
 
     getDomain(url: string) {
@@ -33,7 +31,7 @@ export class RegExpService {
         }
 
         const domainRegExp = RegExp('(?:\\w?://)?(?:www.)?([^/]+)', 'ig');
-        return [...url.trim().matchAll(domainRegExp)].at(0)?.at(1) ?? null;
+        return this.getExactMatched(url.trim(), domainRegExp);
     }
 
     getPathname(url: string) {
@@ -42,6 +40,65 @@ export class RegExpService {
         }
 
         const pathnameRegExp = RegExp('/([^?#]*)', 'ig');
-        return [...url.trim().matchAll(pathnameRegExp)].at(0)?.at(1) ?? null;
+        return this.getExactMatched(url.trim(), pathnameRegExp);
+    }
+
+    /**
+     *
+     * @param startString RegExp constructor's parameter
+     * @returns
+     */
+    createRegExpBuilder(startString: string) {
+        return new (class RegExpBuilder {
+            private expression: string;
+            constructor(initialValue: string) {
+                this.expression = initialValue;
+            }
+
+            /**
+             * Specifies the string that must be included before and after the current expression.
+             * @param partial string to be included but not captured.
+             * @param isForehead default is true. If it's false, first parameter(partial) will set after present expression
+             * @returns
+             */
+            include(partial: string, isForehead: boolean = true) {
+                if (isForehead) {
+                    this.lookbehind(partial);
+                } else {
+                    this.lookaround(partial);
+                }
+
+                return this;
+            }
+
+            /**
+             * Generates a regular expression instance based on what has been set up so far.
+             * @returns RegExp (default flag is 'ig')
+             */
+            getOne() {
+                return new RegExp(this.expression, 'ig');
+            }
+
+            /**
+             * @param partial lookaround(?=) string
+             */
+            private lookaround(partial: string) {
+                const symbol = '?=';
+                this.expression = `(${partial})(${symbol}(${this.expression}))`;
+            }
+
+            /**
+             *
+             * @param partial lookbehind(?<=) string
+             */
+            private lookbehind(partial: string) {
+                const symbol = '?<=';
+                this.expression = `(${symbol}(${this.expression}))(${partial})`;
+            }
+        })(startString);
+    }
+
+    private getExactMatched(str: string, regExp: RegExp) {
+        return [...str.matchAll(regExp)].at(0)?.at(1) ?? null;
     }
 }
