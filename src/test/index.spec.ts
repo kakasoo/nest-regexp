@@ -15,10 +15,8 @@ describe('getUntilPathName', () => {
 
     describe('createRegExpBulder', () => {
         it('includeForhead', () => {
-            const includeRegExp = regExpService.createRegExpBuilder('test').include('test').getOne();
-            console.log(includeRegExp);
-            const res = [...'testtest'.matchAll(includeRegExp)].at(0)?.at(1);
-
+            const includeRegExp = regExpService.createRegExpBuilder('test').include('forehead', true).getOne();
+            const res = 'foreheadtest'.match(includeRegExp).at(0);
             expect(res).toBe('test');
         });
     });

@@ -45,7 +45,7 @@ export class RegExpService {
 
     /**
      *
-     * @param startString RegExp constructor's parameter
+     * @param startString first string to make regexp
      * @returns
      */
     createRegExpBuilder(startString: string) {
@@ -84,7 +84,7 @@ export class RegExpService {
              */
             private lookaround(partial: string) {
                 const symbol = '?=';
-                this.expression = `(${partial})(${symbol}(${this.expression}))`;
+                this.expression = `(${this.expression})(${symbol}(${partial}))`;
             }
 
             /**
@@ -93,7 +93,7 @@ export class RegExpService {
              */
             private lookbehind(partial: string) {
                 const symbol = '?<=';
-                this.expression = `(${symbol}(${this.expression}))(${partial})`;
+                this.expression = `(${symbol}(${partial}))(${this.expression})`;
             }
         })(startString);
     }
