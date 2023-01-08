@@ -14,7 +14,11 @@ export class RegExpService {
     analizeUrl(url: string) {}
 
     getScheme(url: string) {
-        const scheme = RegExp('[a-z]://', 'ig');
-        return url.search(scheme);
+        if (!url || typeof url !== 'string') {
+            return null;
+        }
+
+        const schemeRegExp = RegExp('^[a-z]+://', 'ig');
+        return url.trim().match(schemeRegExp)?.at(0)?.split('://')?.at(0) ?? null;
     }
 }
