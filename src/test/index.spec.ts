@@ -14,22 +14,56 @@ describe('getUntilPathName', () => {
     });
 
     describe('createRegExpBulder', () => {
-        it('includeForhead', () => {
-            const includeRegExp = regExpService
-                .createRegExpBuilder('test')
-                .include('forehead', { isForehead: true })
-                .getOne();
-            const res = 'foreheadtest'.match(includeRegExp).at(0);
-            expect(res).toBe('test');
+        describe('includeForhead', () => {
+            it('includeForhead', () => {
+                const includeRegExp = regExpService
+                    .createRegExpBuilder('test')
+                    .include('forehead', { isForehead: true })
+                    .getOne();
+                const res = 'foreheadtest'.match(includeRegExp).at(0);
+                expect(res).toBe('test');
+            });
         });
 
-        it('includeBehind', () => {
-            const includeRegExp = regExpService
-                .createRegExpBuilder('test')
-                .include('behind', { isForehead: false })
-                .getOne();
-            const res = 'testbehind'.match(includeRegExp).at(0);
-            expect(res).toBe('test');
+        describe('includeBehind', () => {
+            it('includeBehind 1.', () => {
+                const includeRegExp = regExpService
+                    .createRegExpBuilder('test')
+                    .include('behind', { isForehead: false })
+                    .getOne();
+                const res = 'testbehind'.match(includeRegExp).at(0);
+                expect(res).toBe('test');
+            });
+
+            it('includeBehind 2.', () => {
+                const includeRegExp = regExpService
+                    .createRegExpBuilder('cat is behind of ')
+                    .include('dog', { isForehead: false })
+                    .getOne();
+
+                const res = 'cat is behind of dog'.match(includeRegExp).at(0);
+                expect(res).toBe('cat is behind of ');
+            });
+        });
+
+        describe('includeForhead & includeBehind', () => {
+            it('include forhead & behind 1.', () => {
+                const includeRegExp = regExpService
+                    .createRegExpBuilder('mouse')
+                    .include('cat')
+                    .include('dog', { isForehead: false })
+                    .getOne();
+
+                const res = 'catmousedog'.match(includeRegExp).at(0);
+                expect(res).toBe('mouse');
+            });
+
+            it('string after [0-9]+', async () => {
+                const includeRegExp = regExpService.createRegExpBuilder('mouse').include('[0-9]+').getOne();
+
+                const res = '12345mouse'.match(includeRegExp).at(0);
+                expect(res).toBe('mouse');
+            });
         });
     });
 
