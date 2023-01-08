@@ -56,5 +56,13 @@ describe('getUntilPathName', () => {
             const res = regExpService.getPathname('www.example.com/abcd/efg?q1=a&q2=b');
             expect(res).toBe('abcd/efg');
         });
+
+        /**
+         * If scheme is, it treat the scheme as a pathname. This needs to be fixed.
+         */
+        it('https://www.example.com/abcd/efg?q1=a&q2=b', () => {
+            const res = regExpService.getPathname('https://www.example.com/abcd/efg?q1=a&q2=b');
+            expect(res).toBe('abcd/efg');
+        });
     });
 });

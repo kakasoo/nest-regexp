@@ -37,6 +37,10 @@ export class RegExpService {
     }
 
     getPathname(url: string) {
+        if (!url || typeof url !== 'string') {
+            return null;
+        }
+
         const pathnameRegExp = RegExp('/([^?#]*)', 'ig');
         return [...url.trim().matchAll(pathnameRegExp)].at(0)?.at(1) ?? null;
     }
