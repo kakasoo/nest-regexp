@@ -1,0 +1,35 @@
+{
+    "name": "regexp-manager",
+    "version": "0.0.1",
+    "description": "regexp builder for nestjs",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "start:dev": "tsc -w",
+        "build": "tsc",
+        "prepare": "npm run build",
+        "format": "prettier --write \"src/**/*.ts\"",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:cov": "jest --coverage",
+        "test:e2e": "jest --config ./test/jest-e2e.json"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kakasoo/nest-regexp"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/kakasoo/nest-regexp/issues"
+    },
+    "homepage": "https://github.com/kakasoo/nest-regexp#readme",
+    "dependencies": {
+        "@nestjs/common": "^9.2.1",
+        "typescript": "^4.9.4"
+    },
+    "devDependencies": {
+        "@types/node": "^18.11.18"
+    }
+}
