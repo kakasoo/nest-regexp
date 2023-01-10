@@ -98,11 +98,14 @@ export class RegExpService {
             getRawOne(): string {
                 let expression = this.expression;
                 if (typeof this.minimum === 'number' && typeof this.maximum === 'number') {
-                    expression = `[${expression}]{${this.minimum}, ${this.maximum}}`;
+                    // more than equal minimum, less thean equal maximum
+                    expression = `${expression}{${this.minimum}, ${this.maximum}}`;
                 } else if (typeof this.minimum === 'number') {
-                    expression = `[${expression}]{${this.minimum}}`;
+                    // more than equal minimum
+                    expression = `${expression}{${this.minimum},}`;
                 } else if (typeof this.maximum === 'number') {
-                    expression = `[${expression}]{0,${this.maximum}}`;
+                    // more than equal 1, less thean equal maximum
+                    expression = `${expression}{1,${this.maximum}}`;
                 }
 
                 return expression;
@@ -147,6 +150,7 @@ export class RegExpService {
          * ]
          */
 
+        // TODO : if there are too many capturing groups, so? need to test.
         return [...str.matchAll(regExp)].at(0)?.at(1) ?? null;
     }
 }

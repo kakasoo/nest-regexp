@@ -58,7 +58,7 @@ describe('getUntilPathName', () => {
                 expect(res).toBe('mouse');
             });
 
-            it('string after [0-9]+', async () => {
+            it('string after [0-9]+', () => {
                 const includeRegExp = regExpService.createRegExpBuilder('mouse').include('[0-9]+').getOne();
 
                 const res = '12345mouse'.match(includeRegExp).at(0);
@@ -67,12 +67,26 @@ describe('getUntilPathName', () => {
         });
 
         describe('lessThan', () => {
-            it('string "a" but lessThanEqual 3', async () => {
+            it('1. string "a" but lessThanEqual 3', () => {
                 const regExp = regExpService.createRegExpBuilder('a').lessThanEqual(3).getOne();
 
-                expect(regExp.test('a')).toBe(true);
-                expect(regExp.test('aa')).toBe(true);
-                expect(regExp.test('aaa')).toBe(true);
+                expect('a'.match(regExp).at(0) === 'a').toBe(true);
+                expect('aa'.match(regExp).at(0) === 'aa').toBe(true);
+                expect('aaa'.match(regExp).at(0) === 'aaa').toBe(true);
+
+                expect('aaaa'.match(regExp).at(0) === 'aaa').toBe(true);
+                expect('aaaa'.match(regExp).at(0) === 'aaaa').toBe(false);
+            });
+
+            it('1. string "cat" but lessThanEqual 3', () => {
+                const regExp = regExpService.createRegExpBuilder('(cat)').lessThanEqual(3).getOne();
+
+                expect('cat'.match(regExp).at(0) === 'cat').toBe(true);
+                expect('catcat'.match(regExp).at(0) === 'catcat').toBe(true);
+                expect('catcatcat'.match(regExp).at(0) === 'catcatcat').toBe(true);
+
+                expect('catcatcatcat'.match(regExp).at(0) === 'catcatcat').toBe(true);
+                expect('catcatcatcat'.match(regExp).at(0) === 'catcatcatcat').toBe(false);
             });
         });
     });
