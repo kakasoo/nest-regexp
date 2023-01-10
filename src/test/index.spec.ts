@@ -65,6 +65,16 @@ describe('getUntilPathName', () => {
                 expect(res).toBe('mouse');
             });
         });
+
+        describe('lessThan', () => {
+            it('string "a" but lessThanEqual 3', async () => {
+                const regExp = regExpService.createRegExpBuilder('a').lessThanEqual(3).getOne();
+
+                expect(regExp.test('a')).toBe(true);
+                expect(regExp.test('aa')).toBe(true);
+                expect(regExp.test('aaa')).toBe(true);
+            });
+        });
     });
 
     describe('getScheme', () => {

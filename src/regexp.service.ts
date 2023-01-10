@@ -9,14 +9,21 @@ export class RegExpService {
         return originalUrl.split('#')?.at(0)?.split('?').at(0) || '';
     }
 
-    analizeUrl(url: string) {}
+    analizeUrl(url: string): { scheme: string; domain: string; pathname: string; queryString: string } {
+        return {
+            scheme: this.getScheme(url) || null,
+            domain: this.getDomain(url) || null,
+            pathname: this.getPathname(url) || null,
+            queryString: '', // TODO
+        };
+    }
 
     /**
      * get scheme from url.
      * @param url url as string
      * @returns https, ftp, telnet, scheme, anything.
      */
-    getScheme(url: string) {
+    getScheme(url: string): string {
         if (!url || typeof url !== 'string') {
             return null;
         }
@@ -25,7 +32,7 @@ export class RegExpService {
         return this.getExactMatched(url.trim(), schemeRegExp);
     }
 
-    getDomain(url: string) {
+    getDomain(url: string): string {
         if (!url || typeof url !== 'string') {
             return null;
         }
@@ -34,7 +41,7 @@ export class RegExpService {
         return this.getExactMatched(url.trim(), domainRegExp);
     }
 
-    getPathname(url: string) {
+    getPathname(url: string): string {
         if (!url || typeof url !== 'string') {
             return null;
         }
@@ -52,6 +59,8 @@ export class RegExpService {
         return new (class RegExpBuilder {
             private flag: 'g' | 'i' | 'ig' | 'm';
             private expression: string;
+            private minimum?: number = null;
+            private maximum?: number = null;
             constructor(initialValue: string) {
                 this.expression = initialValue;
             }
@@ -72,13 +81,31 @@ export class RegExpService {
                 return this;
             }
 
+            lessThanEqual(maximum: number) {
+                this.maximum = maximum;
+                return this;
+            }
+
             /**
              * Generates a regular expression instance based on what has been set up so far.
              * @returns RegExp (default flag is 'ig')
              */
-            getOne() {
+            getOne(): RegExp {
                 const flag = this.flag ?? 'ig';
-                return new RegExp(this.expression, 'ig');
+                return new RegExp(this.getRawOne(), 'ig');
+            }
+
+            getRawOne(): string {
+                let expression = this.expression;
+                if (typeof this.minimum === 'number' && typeof this.maximum === 'number') {
+                    expression = `[${expression}]{${this.minimum}, ${this.maximum}}`;
+                } else if (typeof this.minimum === 'number') {
+                    expression = `[${expression}]{${this.minimum}}`;
+                } else if (typeof this.maximum === 'number') {
+                    expression = `[${expression}]{0,${this.maximum}}`;
+                }
+
+                return expression;
             }
 
             /**
