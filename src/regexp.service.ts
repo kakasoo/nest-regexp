@@ -66,12 +66,18 @@ export class RegExpService {
             }
 
             /**
-             * Specifies the string that must be included before and after the current expression.
-             * @param partial string to be included but not captured.
-             * @param isForehead default is true. If it's false, first parameter(partial) will set after present expression
-             * @returns
+             *
+             * @param partial sub-regular expression builder that returns a string
+             * @param options isForehead's default is true. If it's false, first parameter(partial) will set after present expression
              */
             include(partial: (qb: RegExpBuilder) => string, options: { isForehead?: boolean }): this;
+
+            /**
+             * Specifies the string that must be included before and after the current expression.
+             * @param partial string to be included but not captured.
+             * @param options isForehead's default is true. If it's false, first parameter(partial) will set after present expression
+             * @returns
+             */
             include(partial: string, options: { isForehead?: boolean }): this;
             include(
                 partial: string | ((qb: RegExpBuilder) => string),
@@ -85,8 +91,7 @@ export class RegExpService {
                     }
                     return this;
                 } else if (typeof partial === 'function') {
-                    const qb = new RegExpBuilder();
-                    const subRegExp = partial(qb);
+                    const subRegExp = partial(new RegExpBuilder());
 
                     if (options.isForehead) {
                         this.expression = this.lookbehind(subRegExp, this.expression);
