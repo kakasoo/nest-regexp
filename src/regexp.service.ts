@@ -61,7 +61,7 @@ export class RegExpService {
             private expression: string;
             private minimum?: number = null;
             private maximum?: number = null;
-            constructor(initialValue: string) {
+            constructor(initialValue: string = '') {
                 this.expression = initialValue;
             }
 
@@ -71,14 +71,30 @@ export class RegExpService {
              * @param isForehead default is true. If it's false, first parameter(partial) will set after present expression
              * @returns
              */
-            include(partial: string, options: { isForehead?: boolean } = { isForehead: true }) {
-                if (options.isForehead) {
-                    this.expression = this.lookbehind(partial, this.expression);
-                } else {
-                    this.expression = this.lookaround(this.expression, partial);
-                }
+            include(partial: (qb: RegExpBuilder) => string, options: { isForehead?: boolean }): this;
+            include(partial: string, options: { isForehead?: boolean }): this;
+            include(
+                partial: string | ((qb: RegExpBuilder) => string),
+                options: { isForehead?: boolean } = { isForehead: true },
+            ) {
+                if (typeof partial === 'string') {
+                    if (options.isForehead) {
+                        this.expression = this.lookbehind(partial, this.expression);
+                    } else {
+                        this.expression = this.lookaround(this.expression, partial);
+                    }
+                    return this;
+                } else if (typeof partial === 'function') {
+                    const qb = new RegExpBuilder();
+                    const subRegExp = partial(qb);
 
-                return this;
+                    if (options.isForehead) {
+                        this.expression = this.lookbehind(subRegExp, this.expression);
+                    } else {
+                        this.expression = this.lookaround(this.expression, subRegExp);
+                    }
+                    return this;
+                }
             }
 
             lessThanEqual(maximum: number) {

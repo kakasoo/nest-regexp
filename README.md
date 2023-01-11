@@ -1,1 +1,33 @@
 # nest-regexp
+
+The library aims to make regular expressions easy and simple for developers who have worked with ORM.
+Inspired by TypeORM's queryBuilder, the library is designed to provide a builder pattern named RegExpBuilder.
+
+
+# createRegExpBuilder
+```typescript
+
+/**
+ * return : /(?<=(forehead))(test)/gi
+ */
+const includeRegExp = regExpService
+    .createRegExpBuilder('test')
+    .include('forehead', { isForehead: true })
+    .getOne();
+```
+```typescript
+/**
+ * return : /((?<=(cat))(mouse))(?=(dog))/gi
+ */
+const includeRegExp = regExpService
+    .createRegExpBuilder('mouse')
+    .include('cat')
+    .include('dog', { isForehead: false })
+    .getOne();
+
+```
+
+you just use `createRegExpBuilder()` method.   
+so, you can create regExp and decorate by using RegExpBuilder methods.
+You can simply call a method called`createRegExpBuilder` to create a builder, and you can use various methods to create regular expressions without learning it.  
+The code above makes you not have to memorize regular expression symbols such as lookaround and lookbehind.  
