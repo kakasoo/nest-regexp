@@ -55,7 +55,7 @@ export class RegExpService {
      * @param startString first string to make regexp
      * @returns
      */
-    createRegExpBuilder(startString: string) {
+    createRegExpBuilder(startString?: string) {
         return new (class RegExpBuilder {
             private flag: 'g' | 'i' | 'ig' | 'm';
             private expression: string;
@@ -63,6 +63,11 @@ export class RegExpService {
             private maximum?: number = null;
             constructor(initialValue: string = '') {
                 this.expression = initialValue;
+            }
+
+            from(initialValue: string) {
+                this.expression = initialValue;
+                return this;
             }
 
             /**
