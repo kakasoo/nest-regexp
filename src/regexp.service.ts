@@ -70,7 +70,7 @@ export class RegExpService {
              * @param partial sub-regular expression builder that returns a string
              * @param options isForehead's default is true. If it's false, first parameter(partial) will set after present expression
              */
-            include(partial: (qb: RegExpBuilder) => string, options: { isForehead?: boolean }): this;
+            include(partial: (qb: RegExpBuilder) => string, options?: { isForehead?: boolean }): this;
 
             /**
              * Specifies the string that must be included before and after the current expression.
@@ -78,7 +78,7 @@ export class RegExpService {
              * @param options isForehead's default is true. If it's false, first parameter(partial) will set after present expression
              * @returns
              */
-            include(partial: string, options: { isForehead?: boolean }): this;
+            include(partial: string, options?: { isForehead?: boolean }): this;
             include(
                 partial: string | ((qb: RegExpBuilder) => string),
                 options: { isForehead?: boolean } = { isForehead: true },
