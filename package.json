@@ -4,6 +4,9 @@
     "description": "regexp builder for nestjs",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "files": [
+        "./dist"
+    ],
     "scripts": {
         "start:dev": "tsc -w",
         "build": "tsc",
