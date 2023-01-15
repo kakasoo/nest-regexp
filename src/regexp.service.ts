@@ -70,6 +70,11 @@ export class RegExpService {
                 return this;
             }
 
+            isOptional() {
+                this.expression = `(${this.expression})?`;
+                return this;
+            }
+
             /**
              *
              * @param partial sub-regular expression builder that returns a string
@@ -142,7 +147,7 @@ export class RegExpService {
              * @param second lookaround(?=) string
              * @return `(${first})(${symbol}(${second}))`
              */
-            private lookaround(first: string, second: string) {
+            private lookaround(first: string, second: string): `(${string})(?=(${string}))` {
                 const symbol = '?=';
                 return `(${first})(${symbol}(${second}))`;
             }
@@ -152,7 +157,7 @@ export class RegExpService {
              * @param second string (to catch)
              * @returns `(${symbol}(${first}))(${second})`
              */
-            private lookbehind(first: string, second: string) {
+            private lookbehind(first: string, second: string): `(?<=(${string}))(${string})` {
                 const symbol = '?<=';
                 return `(${symbol}(${first}))(${second})`;
             }

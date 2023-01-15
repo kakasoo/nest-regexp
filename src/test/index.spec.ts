@@ -125,6 +125,20 @@ describe('getUntilPathName', () => {
         });
     });
 
+    describe('isOptional', () => {
+        it('IsOptional should add a question mark symbol.', () => {
+            const numbers = regExpService.createRegExpBuilder().from('[0-9]').getOne();
+            expect(numbers.test('1234')).toBe(true);
+            expect(numbers.test('abcd')).toBe(false);
+
+            const optionalNumbers = regExpService.createRegExpBuilder().from('[0-9]').isOptional().getOne();
+            expect(optionalNumbers.test('1234')).toBe(true);
+            expect(optionalNumbers.test('abcd')).toBe(true);
+
+            console.log(`${numbers}`);
+        });
+    });
+
     describe.skip('getPathname', () => {
         it('www.example.com/abcd/efg?q1=a&q2=b', () => {
             const res = regExpService.getPathname('www.example.com/abcd/efg?q1=a&q2=b');
