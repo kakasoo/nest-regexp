@@ -1,5 +1,5 @@
 {
-    "name": "regexp-manager",
+    "name": "nest-regexp",
     "version": "0.0.1",
     "description": "regexp builder for nestjs",
     "main": "./dist/index.js",
@@ -21,7 +21,7 @@
         "url": "git+https://github.com/kakasoo/nest-regexp"
     },
     "keywords": [],
-    "author": "",
+    "author": "kakasoo <kscodebase@gmail.com>",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/kakasoo/nest-regexp/issues"
