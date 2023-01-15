@@ -42,7 +42,7 @@
             "json",
             "ts"
         ],
-        "rootDir": "src",
+        "rootDir": "test",
         "transformIgnorePatterns": [
             "^.+\\.js$"
         ],

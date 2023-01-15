@@ -33,4 +33,4 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-/src/test/practice.ts
+./test/practice.ts

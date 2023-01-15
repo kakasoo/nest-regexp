@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { RegExpService } from '../regexp.service';
+import { RegExpService } from '../src/regexp.service';
 
 describe('getUntilPathName', () => {
     let regExpService: RegExpService;
@@ -20,7 +20,7 @@ describe('getUntilPathName', () => {
                     .createRegExpBuilder('test')
                     .include('forehead', { isForehead: true })
                     .getOne();
-                const res = 'foreheadtest'.match(includeRegExp).at(0);
+                const res = 'foreheadtest'.match(includeRegExp)?.at(0);
                 expect(res).toBe('test');
             });
         });
@@ -31,7 +31,7 @@ describe('getUntilPathName', () => {
                     .createRegExpBuilder('test')
                     .include('behind', { isForehead: false })
                     .getOne();
-                const res = 'testbehind'.match(includeRegExp).at(0);
+                const res = 'testbehind'.match(includeRegExp)?.at(0);
                 expect(res).toBe('test');
             });
 
@@ -41,7 +41,7 @@ describe('getUntilPathName', () => {
                     .include('dog', { isForehead: false })
                     .getOne();
 
-                const res = 'cat is behind of dog'.match(includeRegExp).at(0);
+                const res = 'cat is behind of dog'.match(includeRegExp)?.at(0);
                 expect(res).toBe('cat is behind of ');
             });
         });
@@ -54,14 +54,14 @@ describe('getUntilPathName', () => {
                     .include('dog', { isForehead: false })
                     .getOne();
 
-                const res = 'catmousedog'.match(includeRegExp).at(0);
+                const res = 'catmousedog'.match(includeRegExp)?.at(0);
                 expect(res).toBe('mouse');
             });
 
             it('string after [0-9]+', () => {
                 const includeRegExp = regExpService.createRegExpBuilder('mouse').include('[0-9]+').getOne();
 
-                const res = '12345mouse'.match(includeRegExp).at(0);
+                const res = '12345mouse'.match(includeRegExp)?.at(0);
                 expect(res).toBe('mouse');
             });
         });
@@ -70,23 +70,23 @@ describe('getUntilPathName', () => {
             it('1. string "a" but lessThanEqual 3', () => {
                 const regExp = regExpService.createRegExpBuilder('a').lessThanEqual(3).getOne();
 
-                expect('a'.match(regExp).at(0) === 'a').toBe(true);
-                expect('aa'.match(regExp).at(0) === 'aa').toBe(true);
-                expect('aaa'.match(regExp).at(0) === 'aaa').toBe(true);
+                expect('a'.match(regExp)?.at(0) === 'a').toBe(true);
+                expect('aa'.match(regExp)?.at(0) === 'aa').toBe(true);
+                expect('aaa'.match(regExp)?.at(0) === 'aaa').toBe(true);
 
-                expect('aaaa'.match(regExp).at(0) === 'aaa').toBe(true);
-                expect('aaaa'.match(regExp).at(0) === 'aaaa').toBe(false);
+                expect('aaaa'.match(regExp)?.at(0) === 'aaa').toBe(true);
+                expect('aaaa'.match(regExp)?.at(0) === 'aaaa').toBe(false);
             });
 
             it('1. string "cat" but lessThanEqual 3', () => {
                 const regExp = regExpService.createRegExpBuilder('(cat)').lessThanEqual(3).getOne();
 
-                expect('cat'.match(regExp).at(0) === 'cat').toBe(true);
-                expect('catcat'.match(regExp).at(0) === 'catcat').toBe(true);
-                expect('catcatcat'.match(regExp).at(0) === 'catcatcat').toBe(true);
+                expect('cat'.match(regExp)?.at(0) === 'cat').toBe(true);
+                expect('catcat'.match(regExp)?.at(0) === 'catcat').toBe(true);
+                expect('catcatcat'.match(regExp)?.at(0) === 'catcatcat').toBe(true);
 
-                expect('catcatcatcat'.match(regExp).at(0) === 'catcatcat').toBe(true);
-                expect('catcatcatcat'.match(regExp).at(0) === 'catcatcatcat').toBe(false);
+                expect('catcatcatcat'.match(regExp)?.at(0) === 'catcatcat').toBe(true);
+                expect('catcatcatcat'.match(regExp)?.at(0) === 'catcatcatcat').toBe(false);
             });
         });
     });
@@ -151,8 +151,6 @@ describe('getUntilPathName', () => {
 
             const regexp = regExpService.createRegExpBuilder('/([^?#]*)').include('https://').getOne();
             const res = 'https://www.example.com/abcd/efg?q1=a&q2=b'.match(regexp);
-            console.log(regexp);
-            console.log(res);
 
             expect(res).toBe('abcd/efg');
         });
