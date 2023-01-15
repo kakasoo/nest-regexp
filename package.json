@@ -27,6 +27,7 @@
     "dependencies": {
         "@nestjs/common": "^9.2.1",
         "@nestjs/testing": "^9.2.1",
+        "regexp-manager": "^0.0.2",
         "typescript": "^4.9.4"
     },
     "devDependencies": {

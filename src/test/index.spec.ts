@@ -134,8 +134,6 @@ describe('getUntilPathName', () => {
             const optionalNumbers = regExpService.createRegExpBuilder().from('[0-9]').isOptional().getOne();
             expect(optionalNumbers.test('1234')).toBe(true);
             expect(optionalNumbers.test('abcd')).toBe(true);
-
-            console.log(`${numbers}`);
         });
     });
 
