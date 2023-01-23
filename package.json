@@ -1,6 +1,6 @@
 {
     "name": "nest-regexp",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "regexp builder for nestjs",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -27,15 +27,15 @@
     "dependencies": {
         "@nestjs/common": "^9.2.1",
         "@nestjs/testing": "^9.2.1",
-        "regexp-manager": "^0.7.1",
+        "regexp-manager": "^0.9.2",
         "typescript": "^4.9.4"
     },
     "devDependencies": {
-        "@types/jest": "^29.2.5",
+        "@types/jest": "^29.2.6",
         "@types/node": "^18.11.18",
         "jest": "^29.3.1",
-        "rimraf": "^4.1.0",
-        "ts-jest": "^29.0.3"
+        "rimraf": "^4.1.1",
+        "ts-jest": "^29.0.5"
     },
     "jest": {
         "moduleFileExtensions": [
